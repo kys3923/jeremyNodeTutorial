@@ -1,0 +1,6 @@
+MONGODB test cluster
+
+mongo username: youngAdmin
+password: asdasd
+
+mongodb+srv://youngAdmin:asdasd@test.khhmvfx.mongodb.net/?retryWrites=true&w=majority

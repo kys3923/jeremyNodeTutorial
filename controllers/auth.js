@@ -42,7 +42,35 @@ exports.register = async (req, res) => {
 }
 
 exports.getinfo = async (req, res) => {
-  console.log(req.body);
+
+  try {
+    const user = await User.find()
+
+    res.json({
+      message: 'sending user data',
+      user
+    })
+
+  } catch (error) {
+    console.log('error at getting db data')
+  }
+}
+
+exports.getAccount = async (req, res) => {
+
+  try {
+    let foundUser = await User.find({"_id": req.params.id})
+    res.json({
+      status: 'success',
+      foundUser
+    })
+
+  } catch (error) {
+    res.json({
+      status: 'fail',
+      message: 'error at getting data from DB'
+    })
+  }
 }
 
 const sendToken = (user, statusCode, res) => {
