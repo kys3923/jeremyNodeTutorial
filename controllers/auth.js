@@ -73,6 +73,34 @@ exports.getAccount = async (req, res) => {
   }
 }
 
+exports.updateAccount = async (req, res) => {
+  const id = req.params.id
+  const { username, email, contact, address } = req.body;
+
+  try {
+    let request = await User.findByIdAndUpdate(id,
+      {
+        username,
+        email,
+        address,
+        contact
+      } 
+    )
+
+    res.json({
+      status: 'success',
+      request
+    })
+
+  } catch (error) {
+    console.log(error)
+    res.json({
+      success: false,
+      message: 'error at updating DB'
+    })
+  }
+}
+
 const sendToken = (user, statusCode, res) => {
   const token = user.getSignedToken();
   res.status(statusCode).json({
