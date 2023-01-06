@@ -101,6 +101,38 @@ exports.updateAccount = async (req, res) => {
   }
 }
 
+exports.login = async (req, res) => {
+  console.log(req.body)
+  // check email is in DB
+  const {email, password} = req.body;
+
+  if(!email || !password) {
+    return res.status(400).json({ success: false, message: 'no email or no password provided'})
+  }
+
+  try {
+    // if email is in DB, send token
+    const user = await User.findOne({email}).select('+password');
+
+    if (!user) {
+      return res.status(401).json({ success: false, message: 'no user found in DB'})
+    }
+
+    const isMatch = await user.matchPasswords(password);
+
+    if(!isMatch) {
+      return res.status(401).json({ success: false, message: 'password do not match'})
+    }
+
+    sendToken(user, 200, res);
+
+  } catch (error) {
+    res.status(500).json({ success: false, message: 'problem at accessing to DB'})
+  }
+
+  // if email is not in DB, send message
+}
+
 const sendToken = (user, statusCode, res) => {
   const token = user.getSignedToken();
   res.status(statusCode).json({
