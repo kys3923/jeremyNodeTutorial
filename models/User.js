@@ -23,6 +23,12 @@ const UserSchema = new mongoose.Schema({
     minlength:  6,
     select: false
   },
+  todos: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Todo'
+    }
+  ],
   address: String,
   contact: String,
   resetPasswordToken: String,
